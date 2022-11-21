@@ -9,14 +9,15 @@ import java.util.HashMap;
 public class PanelB extends JPanel {
     private JButton[] buttonArr;
     private PanelA pa;
-    final private HashMap<String, Byte> drawModeMap = new HashMap<>() {{
-        put("사각", (byte) 0);
-        put("직선", (byte) 1);
-        put("타원", (byte) 2);
-        put("복사", (byte) 3);
-        put("삭제", (byte) 4);
-        put("저장", (byte) 5);
-        put("불러오기", (byte) 6);
+    final private HashMap<String, Integer> drawModeMap = new HashMap<>() {{
+        put("사각", 0);
+        put("직선", 1);
+        put("타원", 2);
+        put("복사", 3);
+        put("삭제", 4);
+        put("저장", 5);
+        put("불러오기", 6);
+        put("출력", 7);  //TODO 디버그 완료 후 삭제할것
     }};
 
     public PanelB(PanelA pa) {
