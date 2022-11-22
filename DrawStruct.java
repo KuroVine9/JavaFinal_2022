@@ -1,8 +1,9 @@
 package finalexam;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class DrawStruct {
+public class DrawStruct implements Serializable {
     Point start, end;
     int type;
     boolean flag;
@@ -21,7 +22,8 @@ public class DrawStruct {
     }
 
     public boolean isContain(Point point) {
-        return (start.x < point.x && end.x > point.x && start.y < point.y && end.y > point.y);
+//        return (start.x < point.x && end.x > point.x && start.y < point.y && end.y > point.y);
+
         //TODO start가 end보다 높은 경우 있어 제대로 비교되지 않음
     }
 
