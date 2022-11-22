@@ -137,4 +137,12 @@ public class DrawDataHandler {
     public void printAllShape() {   //디버그용 콘솔출력
         for (var data : DrawData) System.out.println(data);
     }
+
+    public void saveObject() {
+        // TODO 도형 저장 메소드
+    }
+
+    public void loadObject() {
+        // TODO 도형 불러오기 메소드
+    }
 }
