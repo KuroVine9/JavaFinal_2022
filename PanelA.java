@@ -130,7 +130,6 @@ public class PanelA extends JPanel {
                     System.out.println("sel?");
                     drawMode = prevmode;
                 }
-                case 7 -> dataHandler.printAllShape(); //TODO 디버그 완료 후 삭제할것
             }
             repaint();
             System.out.println("clicked" + drawMode + ": " + selectedShape);

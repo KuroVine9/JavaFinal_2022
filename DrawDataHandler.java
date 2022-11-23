@@ -14,36 +14,29 @@ public class DrawDataHandler {
 
     public void drawSavedData(Graphics g) {
         for (var data : DrawData) {
-            int x = Math.min(data.start.x, data.end.x);
-            int y = Math.min(data.start.y, data.end.y);
-            int width = Math.abs(data.start.x - data.end.x);
-            int height = Math.abs(data.start.y - data.end.y);
-
             if (data.isFlag()) {
-                switch (data.type) {
-                    case 0, 2 -> {
-                        g.drawRect(x - 2, y - 2, 4, 4);
-                        g.drawRect(x + width - 2, y + height - 2, 4, 4);
-                    }
-                    case 1 -> {
-                        g.drawRect(data.start.x - 2, data.start.y - 2, 4, 4);
-                        g.drawRect(data.end.x - 2, data.end.y - 2, 4, 4);
-                    }
-                }
+                data.drawSelectPoint(g);
             }
-            switch (data.type) {
-                case 0 -> g.drawRect(x, y, width, height);
-                case 1 -> g.drawLine(data.start.x, data.start.y, data.end.x, data.end.y);
-                case 2 -> g.drawOval(x, y, width, height);
-                default -> {
-                    System.out.println("Unknown Type!");
-                }
-            }
+            data.drawShape(g);
         }
     }
 
     public void saveDrawData(Point start, Point end, int type) {
-        DrawData.add(0, new DrawStruct(start, end, type));
+        DrawStruct d = null;
+        switch (type) {
+            case 0 -> d = new Rectangle(start, end);
+            case 1 -> d = new Line(start, end);
+            case 2 -> d = new Tawon(start, end);
+            default -> {
+                System.out.println("Cannot Save Not-Dfnd Shape");
+                System.exit(1);
+            }
+        }
+        DrawData.add(0, d);
+    }
+
+    public void saveDrawData(DrawStruct d) {
+        DrawData.add(0, d);
     }
 
     public int selectShape(MouseEvent e) {
@@ -79,21 +72,15 @@ public class DrawDataHandler {
         return DrawData.get(index).isControlPoint(p);
     }
 
-    public void copyShape(int i) {
-        if (DrawData.get(i).flag) {
-            Point tempS, tempE;
-            if (DrawData.get(i).type == 1) {
-                tempS = new Point(DrawData.get(i).start.x + 10, DrawData.get(i).start.y);
-                tempE = new Point(DrawData.get(i).end.x + 10, DrawData.get(i).end.y);
-            }
-            else {
-                tempS = new Point(DrawData.get(i).start.x + 10, DrawData.get(i).start.y + 10);
-                tempE = new Point(DrawData.get(i).end.x + 10, DrawData.get(i).end.y + 10);
-            }
-            DrawData.get(i).setFlag(false);
-            DrawData.add(0, new DrawStruct(tempS, tempE, DrawData.get(i).type));
-            return;
+    public void copyShape() {
+        for (int i = 0; i < DrawData.size(); i++) {
+            if (DrawData.get(i).isFlag()) copyShape(i);
         }
+    }
+
+    public void copyShape(int i) {
+        DrawData.get(i).setFlag(false);
+        DrawData.add(0, DrawData.get(i).makeCopiedObj());
     }
 
     public void deleteShape() {
@@ -107,31 +94,12 @@ public class DrawDataHandler {
     }
 
     public void moveSelectedShape(Point p, Point start, Point end, int index) {
-        if (end == null) return;
-        else if (isShapeSelected(p, index))
+        if (isShapeSelected(p, index))
             DrawData.get(index).moveShape(new Point(end.x - start.x, end.y - start.y));
     }
 
-    public void resizeSelectedShape(Point p, int index) {
-        switch (DrawData.get(index).isControlPoint(p)) {
-            case START -> {
-                DrawData.get(index).start = p;
-            }
-            case END -> {
-                DrawData.get(index).end = p;
-            }
-        }
-    }
-
     public void resizeSelectedShape(Point p, int index, DrawStruct.TRI mode) {
-        switch (mode) {
-            case START -> {
-                DrawData.get(index).start = p;
-            }
-            case END -> {
-                DrawData.get(index).end = p;
-            }
-        }
+        DrawData.get(index).resizeShape(p, mode);
     }
 
     public void printAllShape() {   //디버그용 콘솔출력

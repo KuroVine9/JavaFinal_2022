@@ -1,7 +1,7 @@
 package finalexam;
 
-import java.awt.BorderLayout;
 import javax.swing.*;
+import java.awt.*;
 
 public class FigureEditor extends JFrame {
     public FigureEditor() {
