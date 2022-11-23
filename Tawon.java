@@ -4,10 +4,11 @@ import java.awt.*;
 import java.io.Serializable;
 
 public class Tawon extends DrawStruct implements Serializable {
-    int tawon_x = Math.min(start.x, end.x);
-    int tawon_y = Math.min(start.y, end.y);
-    int tawon_w = Math.abs(start.x - end.x);
-    int tawon_h = Math.abs(start.y - end.y);
+    private int tawon_x = Math.min(start.x, end.x);
+    private int tawon_y = Math.min(start.y, end.y);
+    private int tawon_w = Math.abs(start.x - end.x);
+    private int tawon_h = Math.abs(start.y - end.y);
+    // 계산을 줄이기 위해 데이터 저장
 
     public Tawon(Point start, Point end) {
         super(start, end);
@@ -55,5 +56,5 @@ public class Tawon extends DrawStruct implements Serializable {
         tawon_y = Math.min(start.y, end.y);
         tawon_w = Math.abs(start.x - end.x);
         tawon_h = Math.abs(start.y - end.y);
-    }
+    }   // 도형의 위치나 크기에 변동이 있을 경우 호출
 }

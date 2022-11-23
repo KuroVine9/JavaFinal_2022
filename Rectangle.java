@@ -4,10 +4,11 @@ import java.awt.*;
 import java.io.Serializable;
 
 public class Rectangle extends DrawStruct implements Serializable {
-    int rect_x = Math.min(start.x, end.x);
-    int rect_y = Math.min(start.y, end.y);
-    int rect_w = Math.abs(start.x - end.x);
-    int rect_h = Math.abs(start.y - end.y);
+    private int rect_x = Math.min(start.x, end.x);
+    private int rect_y = Math.min(start.y, end.y);
+    private int rect_w = Math.abs(start.x - end.x);
+    private int rect_h = Math.abs(start.y - end.y);
+    // 계산을 줄이기 위해 데이터 저장
 
     public Rectangle(Point start, Point end) {
         super(start, end);
@@ -55,5 +56,5 @@ public class Rectangle extends DrawStruct implements Serializable {
         rect_y = Math.min(start.y, end.y);
         rect_w = Math.abs(start.x - end.x);
         rect_h = Math.abs(start.y - end.y);
-    }
+    }   // 도형의 위치나 크기에 변동이 있을 경우 호출
 }
