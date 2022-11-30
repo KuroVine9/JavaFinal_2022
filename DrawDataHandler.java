@@ -1,14 +1,16 @@
 package finalexam;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.io.*;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 public class DrawDataHandler {
-    private ArrayList<DrawStruct> DrawData;
+    private LinkedList<DrawStruct> DrawData;
+    final private String path = "draw.dat";
 
     public DrawDataHandler() {
-        DrawData = new ArrayList<>();
+        DrawData = new LinkedList<>();
     }
 
     public void drawSavedData(Graphics g) {
@@ -41,7 +43,6 @@ public class DrawDataHandler {
         for (var data : DrawData) {
             if (data.isContain(p)) {
                 data.setFlag(true);
-                System.out.println("tagged");   // TODO 디버그용 콘솔 출력
                 return DrawData.indexOf(data);
             }   // 마우스가 도형 안에 있다면 그 도형 인덱스 리턴
         }
@@ -93,6 +94,10 @@ public class DrawDataHandler {
             DrawData.get(index).moveShape(new Point(end.x - start.x, end.y - start.y));
     }   // 도형 이동
 
+    public void moveSelectedShape(int x, int y, int index) {
+        DrawData.get(index).moveShape(new Point(x, y));
+    }
+
     public void resizeSelectedShape(Point p, int index, DrawStruct.TRI mode) {
         DrawData.get(index).resizeShape(p, mode);
     }   // 도형 크기조절
@@ -102,10 +107,30 @@ public class DrawDataHandler {
     }   // 디버그용 콘솔출력
 
     public void saveObject() {
-        // TODO 도형 저장 메소드
+        ObjectOutputStream out = null;
+        try {
+            out = new ObjectOutputStream(new FileOutputStream(path));
+            out.writeObject(DrawData); // DrawData 저장
+            out.close();
+            System.out.println("Saved");
+        } catch (FileNotFoundException f) {   //예외처리
+            System.out.println("No File");
+        } catch (IOException ioe) {   //예외처리
+            System.out.println("Error Occur");
+        }
     }
 
     public void loadObject() {
-        // TODO 도형 불러오기 메소드
+        ObjectInputStream in = null;
+        try {
+            in = new ObjectInputStream(new FileInputStream(path));
+            DrawData = (LinkedList<DrawStruct>) in.readObject(); //Data에 저장
+            clearSelect();
+            in.close();
+        } catch (ClassNotFoundException e) {   //예외처리
+            System.out.println("No File");
+        } catch (IOException ioe) {   //예외처리
+            System.out.println("Error Occur");
+        }
     }
 }

@@ -1,9 +1,8 @@
 package finalexam;
 
 import java.awt.*;
-import java.io.Serializable;
 
-public class Rectangle extends DrawStruct implements Serializable {
+public class Rectangle extends DrawStruct {
     private int rect_x, rect_y, rect_w, rect_h;
     // 계산을 줄이기 위해 데이터 저장
 

@@ -20,14 +20,14 @@ abstract public class DrawStruct implements Serializable {  // 도형의 슈퍼 
     }
 
     abstract public void drawShape(Graphics g);
-
     // 도형 그리기
+
     abstract public void drawSelectPoint(Graphics g);
-
     // 도형의 컨트롤포인트 그리기
-    abstract public DrawStruct makeCopiedObj();
 
+    abstract public DrawStruct makeCopiedObj();
     // 도형의 이동된 복사본 리턴
+
     public void moveShape(Point p) {
         start.x += p.x;
         start.y += p.y;
@@ -43,9 +43,11 @@ abstract public class DrawStruct implements Serializable {  // 도형의 슈퍼 
     }   // 도형 크기조절
 
     public boolean isContain(Point point) {
-        return (start.x < point.x && end.x > point.x && start.y < point.y && end.y > point.y);
-
-        //TODO start가 end보다 높은 경우 있어 제대로 비교되지 않음
+        int max_x = Math.max(start.x, end.x);
+        int min_y = Math.min(start.y, end.y);
+        int min_x = Math.min(start.x, end.x);
+        int max_y = Math.max(start.y, end.y);
+        return (min_x < point.x && max_x > point.x && min_y < point.y && max_y > point.y);
     }   // point가 도형의 내부인지 리턴
 
     public TRI isControlPoint(Point point) {

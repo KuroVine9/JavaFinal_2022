@@ -1,9 +1,8 @@
 package finalexam;
 
 import java.awt.*;
-import java.io.Serializable;
 
-public class Tawon extends DrawStruct implements Serializable {
+public class Tawon extends DrawStruct {
     private int tawon_x, tawon_y, tawon_w, tawon_h;
     // 계산을 줄이기 위해 데이터 저장
 

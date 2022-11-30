@@ -2,12 +2,16 @@ package finalexam;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class PanelA extends JPanel {
-    int drawMode, prevmode, selectedShape;  // drawMode: -1->도형 이동모드 -2->도형 크기조절, selectedShape: 선택된 도형의 인덱스
-    DrawStruct.TRI controlpoint;    // 현재 위치가 어느 쪽 컨트롤포인트인지 저장
+    int drawMode, prevmode, selectedShape;
+    // drawMode: -1->도형 이동모드 -2->도형 크기조절, selectedShape: 선택된 도형의 인덱스
+    DrawStruct.TRI controlpoint;
+    // 현재 위치가 어느 쪽 컨트롤포인트인지 저장
     Point start, end, xy_pointer, wh_size;
     DrawDataHandler dataHandler;
 
@@ -25,6 +29,8 @@ public class PanelA extends JPanel {
         MyMouseListener listener = new MyMouseListener();
         addMouseListener(listener);
         addMouseMotionListener(listener);
+        addKeyListener(new MyKeyListener());
+        requestFocus();
         setLayout(null);
     }
 
@@ -68,7 +74,7 @@ public class PanelA extends JPanel {
                 case 0, 1, 2 -> selectedShape = -1; // 그리기 모드면 도형 선택 해제
                 case 3, 4 -> selectedShape = dataHandler.selectShape(e.getPoint());    // 복사, 삭제 모드라면 도형 선택
             }
-            System.out.println("press" + drawMode + ": " + selectedShape);  // TODO 디버그용 콘솔 출력
+            requestFocus();
         }
 
         public void mouseDragged(MouseEvent e) {
@@ -95,7 +101,6 @@ public class PanelA extends JPanel {
                 case 0, 1, 2 -> {
                     if (Math.abs(start.x - end.x) < 5 && Math.abs(start.y - end.y) < 5) {
                         selectedShape = dataHandler.selectShape(e.getPoint());
-                        System.out.println("sel?"); // TODO 디버그용 콘솔 출력
                     }   // 마우스가 거의 움직이지 않았다면 그린 결과물 무시하고 도형 클릭 시도로 간주
                     else dataHandler.saveDrawData(start, end, drawMode);    // 도형 저장
                 }
@@ -122,10 +127,8 @@ public class PanelA extends JPanel {
         }
 
         public void mouseClicked(MouseEvent e) {
-            System.out.println(drawMode);
             if (drawMode == -1 || drawMode == -2) {
                 selectedShape = dataHandler.selectShape(e.getPoint());
-                System.out.println("sel?"); // TODO 디버그용 콘솔 출력
                 drawMode = prevmode;
             }   // 도형 재선택
 
@@ -138,7 +141,36 @@ public class PanelA extends JPanel {
                 selectedShape = -1;
             }
             repaint();
-            System.out.println("clicked" + drawMode + ": " + selectedShape);
+        }
+    }
+
+    class MyKeyListener extends KeyAdapter {
+        public void keyPressed(KeyEvent e) {
+            if (selectedShape == -1) return;
+            int keyCode = e.getKeyCode();
+            switch (keyCode) {
+                case KeyEvent.VK_UP -> {
+                    dataHandler.moveSelectedShape(0, -10, selectedShape);
+                }
+                case KeyEvent.VK_DOWN -> {
+                    dataHandler.moveSelectedShape(0, 10, selectedShape);
+                }
+                case KeyEvent.VK_LEFT -> {
+                    dataHandler.moveSelectedShape(-10, 0, selectedShape);
+                }
+                case KeyEvent.VK_RIGHT -> {
+                    dataHandler.moveSelectedShape(10, 0, selectedShape);
+                }
+                case KeyEvent.VK_DELETE -> {
+                    dataHandler.deleteShape(selectedShape);
+                    selectedShape = -1;
+                }
+                case KeyEvent.VK_V -> {
+                    dataHandler.copyShape(selectedShape);
+                    selectedShape = -1;
+                }
+            }
+            repaint();
         }
     }
 }
