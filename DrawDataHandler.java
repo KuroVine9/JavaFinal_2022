@@ -90,8 +90,7 @@ public class DrawDataHandler {
     }   // 인덱스로 받은 도형 삭제
 
     public void moveSelectedShape(Point start, Point end, int index) {
-        if (isShapeSelected(end, index))
-            DrawData.get(index).moveShape(new Point(end.x - start.x, end.y - start.y));
+        DrawData.get(index).moveShape(new Point(end.x - start.x, end.y - start.y));
     }   // 도형 이동
 
     public void moveSelectedShape(int x, int y, int index) {
