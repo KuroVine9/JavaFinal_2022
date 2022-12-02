@@ -34,7 +34,7 @@ bool 값을 가지고 있다.
 
 <hr>
 
-GUI 클래스는 과제 11로 제출하였던 것을 토대로 만들어졌다.
+GUI 클래스는 [과제 11](https://github.com/KuroVine9/JavaProj7/tree/master/src/javaproj11)로 제출하였던 것을 토대로 만들어졌다.
 
 `PanelA` 클래스는 도형이 그려지는 노란색 영역이다. `PanelB`의 버튼 입력을 받아
 사용자가 원하는 동작을 하도록 설계되었다. 여기에는 `DrawDataHandler` 객체가
