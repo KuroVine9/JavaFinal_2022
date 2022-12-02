@@ -8,20 +8,20 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class PanelA extends JPanel {
-    int drawMode, prevmode, selectedShape;
+    int drawMode, prevMode, selectedShape;
     // drawMode: -1->도형 이동모드 -2->도형 크기조절, selectedShape: 선택된 도형의 인덱스
-    DrawStruct.TRI controlpoint;
+    DrawStruct.TRI controlPoint;
     // 현재 위치가 어느 쪽 컨트롤포인트인지 저장
     Point start, end, xy_pointer, wh_size;
     DrawDataHandler dataHandler;
 
     public PanelA() {
         drawMode = 0;
-        prevmode = 0;
+        prevMode = 0;
         selectedShape = -1;
         start = null;
         end = null;
-        controlpoint = DrawStruct.TRI.NULL;
+        controlPoint = DrawStruct.TRI.NULL;
         xy_pointer = new Point();
         wh_size = new Point();
         dataHandler = new DrawDataHandler();
@@ -61,13 +61,13 @@ public class PanelA extends JPanel {
             start = e.getPoint();
             end = start;
             if (dataHandler.isShapeSelected(e.getPoint(), selectedShape)) {
-                prevmode = drawMode;
+                prevMode = drawMode;
                 drawMode = -1;
             }   // 도형이 선택되었다면 현재 모드 저장 후 -1로 변경
             else if (dataHandler.isShapeControlSelected(e.getPoint(), selectedShape)) {
-                prevmode = drawMode;
+                prevMode = drawMode;
                 drawMode = -2;
-                controlpoint = dataHandler.getShapeControl(e.getPoint(), selectedShape);
+                controlPoint = dataHandler.getShapeControl(e.getPoint(), selectedShape);
             }   // 모드 변경 후 어느 점을 선택하였는지 저장
 
             switch (drawMode) {
@@ -90,7 +90,7 @@ public class PanelA extends JPanel {
                     start = end;
                 }   // 이동
                 case -2 -> {
-                    dataHandler.resizeSelectedShape(e.getPoint(), selectedShape, controlpoint);
+                    dataHandler.resizeSelectedShape(e.getPoint(), selectedShape, controlPoint);
                 }   // 크기조정
             }
             repaint();  // 계속 마우스에 의한 변화 저장 후 리페인트
@@ -118,7 +118,7 @@ public class PanelA extends JPanel {
                     if (!dataHandler.isShapeSelected(e.getPoint(), selectedShape)) {
                         dataHandler.clearSelect();
                         selectedShape = -1;
-                        drawMode = prevmode;
+                        drawMode = prevMode;
                     }   // 선택 도형이 없다면 선택 모드를 해제하고 원래 모드로 되돌림
                 }
             }
@@ -129,7 +129,7 @@ public class PanelA extends JPanel {
         public void mouseClicked(MouseEvent e) {
             if (drawMode == -1 || drawMode == -2) {
                 selectedShape = dataHandler.selectShape(e.getPoint());
-                drawMode = prevmode;
+                drawMode = prevMode;
             }   // 도형 재선택
 
             if (drawMode == 3 && selectedShape != -1) {
